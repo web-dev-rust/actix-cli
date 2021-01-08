@@ -1,6 +1,26 @@
 # actix-cli
 CLI to create web services with Actix
 
+- [x] Minimal server with health check and readiness check
+- [x] Fault-tolerant option can be enabled to use Bastion
+- [x] Logger middleware option can be enabled with `--request-logger` flag
+- [ ] Read routes configs from `Config.toml`
+- [ ] Basic CRUD controllers
+- [ ] Auth middleware option can be enabled with `--auth` flag
+- [ ] Read models configs from `Config.toml`
+- [ ] Basic Docker config can be enabled with flag
+
+> Not defining a Database will mean a `Context` will be created to support a basic `HashMap`.
+ 
+
+## Installing
+
+1. If you don't have Rust in your computer you can run `make setup` or visit https://rustup.rs/.
+2. Make sure your `/usr/local/bin` is in `PATH`.
+3. Than run `make build`.
+
+> * Windows not yet supported
+
 ## Usage
 
 ```sh
