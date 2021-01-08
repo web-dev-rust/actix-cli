@@ -40,7 +40,7 @@ pub fn create_cargo(enable_bastion: bool, name: String) -> Result<(), ActixCliEr
         "actix-web = \"3.3.2\"",
         "actix-rt = \"1.1.1\"",
         "num_cpus = \"1.0\"",
-        "log = \"0.4.12\"",
+        "log = \"0.4.11\"",
         "env_logger = \"0.8.2\"",
         "uuid = \"0.8.1\"",
     ]

@@ -1,5 +1,8 @@
 use std::fs::OpenOptions;
 use std::io::prelude::*;
+use crate::error::ActixCliError;
+
+pub mod routes;
 
 const fn main_content() -> &'static str {
     r#"
@@ -8,14 +11,14 @@ use actix_web::{App, HttpServer};
 {bastion_use}
 use uuid::Uuid;
 
-mod schema;
-mod {name};
+//mod {name};
 mod {name}_web;
 
+use {name}_web::routes::app_routes;
 //{project_use}
 
 #[actix_rt::main]
-async fn {basftion_main_fn}() -> Result<(), std::io::Error> {
+async fn {bastion_main_fn}() -> Result<(), std::io::Error> {
     {not_bastion}
 
     HttpServer::new(|| {
@@ -58,10 +61,12 @@ env_logger::init();
 const fn logger() -> &'static str {
     r#"
     .wrap(DefaultHeaders::new().header("x-request-id", Uuid::new_v4().to_string()))
-    .wrap(Logger::new("IP:%a DATETIME:%t REQUEST:\"%r\" STATUS: %s DURATION:%D X-REQUEST-ID:%{x-request-id}o"))\n"#
+    .wrap(Logger::new("IP:%a DATETIME:%t REQUEST:\"%r\" STATUS: %s DURATION:%D X-REQUEST-ID:%{x-request-id}o"))
+
+    "#
 }
 
-pub fn create_main(name: String, bastion: bool, request_logger: bool) {
+pub fn create_main(name: String, bastion: bool, request_logger: bool) -> Result<(), ActixCliError> {
     let mut main = String::from(main_content());
     
     if let Some(idx) = main.find("{bastion_main}") {
@@ -74,9 +79,9 @@ pub fn create_main(name: String, bastion: bool, request_logger: bool) {
 
     if let Some(idx) = main.find("{bastion_main_fn}") {
         if bastion {
-            main.replace_range(idx..=idx+17, "web_main");
+            main.replace_range(idx..=idx+16, "web_main");
         } else {
-            main.replace_range(idx..=idx+17, "main");
+            main.replace_range(idx..=idx+16, "main");
         }
     }
 
@@ -107,10 +112,11 @@ pub fn create_main(name: String, bastion: bool, request_logger: bool) {
     let main = main.replace("{name}", &name.replace("-", "_"));
     let mut file = OpenOptions::new()
         .write(true)
-        .open(format!("./{}/src/main.rs", name))
-        .unwrap();
+        .open(format!("./{}/src/main.rs", name))?;
 
     if let Err(e) = writeln!(file, "{}", main) {
         eprintln!("Couldn't create src/main.rs: {}", e);
     }
+
+    Ok(())
 }
