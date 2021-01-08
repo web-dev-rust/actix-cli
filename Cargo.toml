@@ -1,0 +1,11 @@
+[package]
+name = "actix-cli"
+version = "0.1.0"
+authors = ["Julia Naomi <jnboeira@outlook.com>"]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+structopt = "0.3"
+bytes = "1.0.0"
