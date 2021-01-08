@@ -9,6 +9,7 @@ pub enum ActixCliError {
     CargoNotAvailable,
     FaultTolerantTypeError,
     ProjectNameMustBeDefined,
+    EnableRequestLogger,
 }
 
 impl fmt::Display for ActixCliError {
@@ -22,9 +23,12 @@ impl fmt::Display for ActixCliError {
                 write!(f, "Cargo is required, please visit https://rustup.rs")
             }
             ActixCliError::FaultTolerantTypeError => {
-                write!(f, "`fault_tolerant` should be `true` or `false`")
+                write!(f, "`fault-tolerant` should be `true` or `false`")
             }
             ActixCliError::ProjectNameMustBeDefined => write!(f, "Project name is required"),
+            ActixCliError::EnableRequestLogger => {
+                write!(f, "`request-logger` should be `true` or `false`")
+            }
         }
     }
 }

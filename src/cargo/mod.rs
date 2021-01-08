@@ -41,6 +41,8 @@ pub fn create_cargo(enable_bastion: bool, name: String) -> Result<(), ActixCliEr
         "actix-rt = \"1.1.1\"",
         "num_cpus = \"1.0\"",
         "log = \"0.4.12\"",
+        "env_logger = \"0.8.2\"",
+        "uuid = \"0.8.1\"",
     ]
     .into_iter()
     .for_each(|line| {
