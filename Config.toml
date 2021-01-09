@@ -1,0 +1,14 @@
+[crud]
+name = "object"
+
+[crud.routes]
+create = "object/new"
+read = "object/get/{id}"
+update = "object/update/{id}"
+delete = "object/delete/{id}"
+list = "object/get"
+
+[crud.model]
+name = "String"
+age = "usize"
+school = "String"

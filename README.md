@@ -4,8 +4,8 @@ CLI to create web services with Actix
 - [x] Minimal server with health check and readiness check
 - [x] Fault-tolerant option can be enabled to use Bastion
 - [x] Logger middleware option can be enabled with `--request-logger` flag
-- [ ] Read routes configs from `Config.toml`
 - [ ] Basic CRUD controllers
+- [ ] Read routes configs from `Config.toml`
 - [ ] Auth middleware option can be enabled with `--auth` flag
 - [ ] Read models configs from `Config.toml`
 - [ ] Basic Docker config can be enabled with flag
@@ -45,3 +45,31 @@ OPTIONS:
 * `fault-tolerant`: `bool`.
 * `request-logger`: `bool`.
 * `name`: `String`.
+
+## Confit.toml
+
+A few examples of `Config.toml`.
+
+### CRUD
+
+```toml
+[crud]
+name = "object"
+
+[crud.routes]
+create = "object/new"
+read = "object/get/{id}"
+update = "object/update/{id}"
+delete = "object/delete/{id}"
+list = "object/get"
+
+[crud.model]
+name = "String"
+age = "usize"
+school = "String"
+```
+
+* `name` is required.
+* `routes` is required, all routes should be Strings.
+* If `routes` don't start with `name`, `name` will bem added to them.
+* `model` is required, all types should be Strings with valid Rust types.

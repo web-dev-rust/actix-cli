@@ -3,6 +3,7 @@ use std::io::prelude::*;
 use crate::error::ActixCliError;
 
 pub mod routes;
+pub mod controller;
 
 const fn main_content() -> &'static str {
     r#"
