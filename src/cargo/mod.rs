@@ -43,6 +43,9 @@ pub fn create_cargo(enable_bastion: bool, name: String) -> Result<(), ActixCliEr
         "log = \"0.4.11\"",
         "env_logger = \"0.8.2\"",
         "uuid = \"0.8.1\"",
+        "serde = { version = \"1.0.104\", features = [\"derive\"] }",
+        "serde_json = \"1.0.44\"",
+        "serde_derive = \"1.0.104\"",
     ]
     .into_iter()
     .for_each(|line| {

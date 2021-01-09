@@ -1,46 +1,65 @@
 use std::fs::OpenOptions;
 use std::io::prelude::*;
 use std::fs;
+use convert_case::{Case, Casing};
+
 use crate::error::ActixCliError;
 use crate::config::crud::CrudConfig;
 
-const fn routes() -> &'static str {
-    r#"
-{project_use}
-use actix_web::{web, HttpResponse};
+fn crud_controller(name: &str, object: &str) -> String {
+    let name = name.replace("-", "_");
+    format!("
+    use crate::{}::model::{}::*;
+    use crate::{}::database::DatabaseClient;
 
-pub fn app_routes(config: &mut web::ServiceConfig) {
-    config.service(
-        web::scope("/")
-            {projet_scopes}
-            .route("ping", web::get().to(pong))
-            .route("~/ready", web::get().to(readiness))
-            .route("", web::get().to(|| HttpResponse::NotFound())),
-    );
+    use actix_web::{{web, HttpResponse, Responder}};
+    
+    pub async fn create_{}(state: web::Data<DatabaseClient>, info: web::Json<@object>) -> impl Responder {{
+        let id = uuid::Uuid::new_v4();
+    
+        unimplemented!()
+    }}
+    
+    pub async fn show_{}(state: web::Data<DatabaseClient>) -> impl Responder {{
+        unimplemented!()
+    }}
+
+    pub async fn delete_{}(id: web::Path<String>, state: web::Data<DatabaseClient>) -> impl Responder {{
+        let uuid = id.to_string();
+    
+        if uuid::Uuid::parse_str(&uuid).is_err() {{
+            return HttpResponse::BadRequest().body(\"Id must be a Uuid::V4\");
+        }}
+    
+        unimplemented!()
+    }}
+    
+    pub async fn get_{}(id: web::Path<String>, state: web::Data<DatabaseClient>) -> impl Responder {{
+        let uuid = id.to_string();
+    
+        if uuid::Uuid::parse_str(&uuid).is_err() {{
+            return HttpResponse::BadRequest().body(\"Id must be a Uuid::V4\");
+        }}
+    
+        unimplemented!()
+    }}
+    
+    pub async fn update_{}(
+        id: web::Path<String>,
+        info: web::Json<@objectUpdate>, 
+        state: web::Data<DatabaseClient>) -> impl Responder {{
+        let uuid = id.to_string();
+    
+        if uuid::Uuid::parse_str(&uuid).is_err() {{
+            return HttpResponse::BadRequest().body(\"Id must be a Uuid::V4\");
+        }}
+    
+        unimplemented!()
+    }}
+", name, name, name, object, object, object, object, object).replace("@object", &object.to_case(Case::Pascal))
 }
-// Move to controller/mod.rs
-// use actix_web::{HttpResponse, Responder};
-use actix_web::Responder;
 
-pub async fn pong() -> impl Responder {
-    HttpResponse::Ok().body("pong")
-}
-
-pub async fn readiness() -> impl Responder {
-    let process = std::process::Command::new("sh")
-        .arg("-c")
-        .arg("echo hello")
-        .output();
-
-    match process {
-        Ok(_) => HttpResponse::Accepted(),
-        Err(_) => HttpResponse::InternalServerError(),
-    }
-}
-"#
-}
-
-const fn modules() -> &'static str {
+const fn module_path() -> &'static str {
     r#"
 {crud}
 
@@ -64,7 +83,7 @@ pub async fn readiness() -> impl Responder {
     "#
 }
 
-pub fn create_controllers_rs(name: String, routes_config: Option<CrudConfig>) -> Result<(), ActixCliError> {
+pub fn create_controllers_rs(name: String, crud_config: Option<CrudConfig>) -> Result<(), ActixCliError> {
     let _name = name.replace("-", "_");
     fs::create_dir(format!("./{}/src/{}_web/controllers", name, _name))?;
 
@@ -73,29 +92,28 @@ pub fn create_controllers_rs(name: String, routes_config: Option<CrudConfig>) ->
         .open(format!("./{}/src/{}_web/controllers/mod.rs", name, _name))?;
 
     if let Err(e) = writeln!(file, "{}", 
-        if routes_config.is_some() {
-            module_path!().replace("{crud}", "pub mod crud;")
+        if crud_config.is_some() {
+            module_path().replace("{crud}", "pub mod crud;")
         } 
-        else {modules().replace("{crud}", "")}) 
+        else {module_path().replace("{crud}", "")}) 
     {
         eprintln!("Couldn't create src/{}_web/controllers/mod.rs: {}",name, e);
     }
 
-    // let mut file = OpenOptions::new().write(true)
-    //     .create_new(true)
-    //     .open(format!("./{}/src/{}_web/routes.rs", name, _name))?;
+    Ok(())
+}
 
-    // let crud_routes = if routes_config.is_some() { 
-    //     routes()
-    //         .replace("{projet_scopes}", &routes_config.clone().unwrap().routes) 
-    //         .replace("{project_use}", &routes_config.unwrap().project_use)
-    // } else { 
-    //     routes().replace("{projet_scopes}", "").replace("{project_use}", "")
-    // };
+pub fn create_crud_controller_rs(name: String, crud_name: String) -> Result<(), ActixCliError> {
+    let _name = name.replace("-", "_");
+    let mut file = OpenOptions::new().write(true)
+        .create_new(true)
+        .open(format!("./{}/src/{}_web/controllers/crud.rs", name, _name))?;
 
-    // if let Err(e) = writeln!(file, "{}", crud_routes) {
-    //     eprintln!("Couldn't create src/{}_web/routes.rs: {}", name, e);
-    // }
+    if let Err(e) = writeln!(file, "{}", 
+        crud_controller(&name, &crud_name)) 
+    {
+        eprintln!("Couldn't create src/{}_web/controllers/crud.rs: {}",name, e);
+    }
 
     Ok(())
 }

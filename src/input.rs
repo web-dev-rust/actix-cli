@@ -1,5 +1,6 @@
 use crate::error::ActixCliError;
 use structopt::StructOpt;
+use std::path::PathBuf;
 
 /// A basic example
 #[derive(StructOpt, Debug)]
@@ -15,6 +16,9 @@ pub struct Opt {
     /// Defines project name in Cargo.toml
     #[structopt(short, long, parse(try_from_str = name))]
     pub name: String,
+    /// Config.toml file path
+    #[structopt(short, long, parse(from_os_str))]
+    pub config_file: Option<PathBuf>,
 
 }
 

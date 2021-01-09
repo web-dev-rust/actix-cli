@@ -7,7 +7,7 @@ use crate::config::crud::CrudConfig;
 const fn routes() -> &'static str {
     r#"
 use actix_web::{web, HttpResponse};
-use crate::{project_name}_web::controllers::*;
+use crate::{project_name}_web::controllers::{ pong, readiness };
 {project_use}
 
 pub fn app_routes(config: &mut web::ServiceConfig) {

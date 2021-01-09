@@ -12,7 +12,7 @@ pub enum ActixCliError {
     EnableRequestLogger,
     FailedToParseConfigToml,
     ConfigTableFormat,
-    ConfigRequiresModelAndRoutesKey,
+    // ConfigRequiresModelAndRoutesKey,
     CrudNameIsRequired,
     CrudStructType,
     UnknwonCrudItem,
@@ -42,9 +42,9 @@ impl fmt::Display for ActixCliError {
             ActixCliError::ConfigTableFormat => {
                 write!(f, "Config.toml should be table based")
             },
-            ActixCliError::ConfigRequiresModelAndRoutesKey => {
-                write!(f, "Config.toml CRUD must contain `model` and `routes` keys")
-            },
+            // ActixCliError::ConfigRequiresModelAndRoutesKey => {
+            //     write!(f, "Config.toml CRUD must contain `model` and `routes` keys")
+            // },
             ActixCliError::CrudNameIsRequired => {
                 write!(f, "Config.toml CRUD must contain a String for `name`")
             },

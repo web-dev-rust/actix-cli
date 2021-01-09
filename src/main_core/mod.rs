@@ -4,6 +4,7 @@ use crate::error::ActixCliError;
 
 pub mod routes;
 pub mod controller;
+pub mod model;
 
 const fn main_content() -> &'static str {
     r#"
@@ -12,7 +13,7 @@ use actix_web::{App, HttpServer};
 {bastion_use}
 use uuid::Uuid;
 
-//mod {name};
+mod {name};
 mod {name}_web;
 
 use {name}_web::routes::app_routes;
