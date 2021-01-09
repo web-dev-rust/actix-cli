@@ -6,6 +6,7 @@ mod error;
 mod input;
 mod setup;
 mod config;
+mod database;
 
 use input::Opt;
 
@@ -29,7 +30,8 @@ fn main() {
         let _ = main_core::controller::create_crud_controller_rs(opt.name.clone(), configs.clone().unwrap().model_name);
     }
 
-    let _ = main_core::model::create_crud_model_rs(opt.name.clone(), configs).unwrap();
+    let _ = main_core::model::create_crud_model_rs(opt.name.clone(), configs.clone()).unwrap();
+    let _ = database::create_crud_model_rs(opt.name.clone(), configs.clone()).unwrap();
 
     // build
     let _ = setup::build().unwrap();

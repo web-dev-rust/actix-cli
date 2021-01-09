@@ -9,6 +9,7 @@ const DERIVE: &'static str = "
 #[derive(Serialize, Deserialize, Debug, PartialEq, Clone)]";
 const fn modules() -> &'static str {
     r#"pub mod model;
+pub mod database;
     "#
 }
 
@@ -69,7 +70,6 @@ fn serde_obj(model: String) -> String {
 
 fn serde_obj_update(name: &str, model: String) -> String {
     let update = name.to_case(Case::Pascal) + "Update";
-    println!("{}{:?}",name.to_case(Case::Pascal), update);
     String::from(DERIVE)
     + &model.replace(": ", ": Option<")
     .replace(",", ">,")

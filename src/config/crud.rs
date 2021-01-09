@@ -32,7 +32,7 @@ fn create_crud_model(model: &std::collections::BTreeMap<String, Value>, name: &s
 pub struct ".to_string() + &name.to_case(Case::Pascal) + " {";
     let _ = model.iter().map(|(key, value)| {
         let _type = value.as_str().ok_or_else(|| ActixCliError::CrudStructType)?;
-        let field = key.to_owned() + ": " + _type + ", ";
+        let field = "pub ".to_string() + key + ": " + _type + ", ";
         struct_def.push_str(&field);
         Ok(())
     }).try_for_each(|field: Result<(), ActixCliError>| {

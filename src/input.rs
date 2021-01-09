@@ -2,7 +2,7 @@ use crate::error::ActixCliError;
 use structopt::StructOpt;
 use std::path::PathBuf;
 
-/// A basic example
+/// A CLI to create actix-web projects boilerplate.
 #[derive(StructOpt, Debug)]
 #[structopt(name = "actix-cli")]
 pub struct Opt {

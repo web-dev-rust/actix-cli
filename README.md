@@ -4,7 +4,8 @@ CLI to create web services with Actix
 - [x] Minimal server with health check and readiness check
 - [x] Fault-tolerant option can be enabled to use Bastion
 - [x] Logger middleware option can be enabled with `--request-logger` flag
-- [ ] Basic CRUD controllers
+- [x] Basic CRUD controllers
+- [ ] Databa configurations
 - [ ] Read routes configs from `Config.toml`
 - [ ] Auth middleware option can be enabled with `--auth` flag
 - [ ] Read models configs from `Config.toml`
@@ -25,7 +26,7 @@ CLI to create web services with Actix
 
 ```sh
 actix-cli 0.1.0
-A basic example
+A CLI to create actix-web projects boilerplate.
 
 USAGE:
     actix-cli [OPTIONS] --name <name>
@@ -35,6 +36,7 @@ FLAGS:
     -V, --version    Prints version information
 
 OPTIONS:
+    -c, --config-file <config-file>          Config.toml file path
     -f, --fault-tolerant <fault-tolerant>    Enables Bastion for fault tolerant system [default: true]
     -n, --name <name>                        Defines project name in Cargo.toml
     -r, --request-logger <request-logger>    Enables request logger as `[IP:%a DATETIME:%t REQUEST:\"%r\" STATUS: %s
@@ -45,6 +47,11 @@ OPTIONS:
 * `fault-tolerant`: `bool`.
 * `request-logger`: `bool`.
 * `name`: `String`.
+* `config-file`: `std::path::PathBuf`.
+
+### Example
+
+By executing command `actix-cli -n maluco-cli -r true -f true --config-file Config.toml` with the Config.toml as defined below in **CRUD** section the result is found in the [repo](https://github.com/web-dev-rust/actix-cli-basic-example)
 
 ## Confit.toml
 

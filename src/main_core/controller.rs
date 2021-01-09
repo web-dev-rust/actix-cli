@@ -10,21 +10,21 @@ fn crud_controller(name: &str, object: &str) -> String {
     let name = name.replace("-", "_");
     format!("
     use crate::{}::model::{}::*;
-    use crate::{}::database::DatabaseClient;
+    use crate::{}::database::Context;
 
     use actix_web::{{web, HttpResponse, Responder}};
     
-    pub async fn create_{}(state: web::Data<DatabaseClient>, info: web::Json<@object>) -> impl Responder {{
+    pub async fn create_{}(state: web::Data<Context>, info: web::Json<@object>) -> impl Responder {{
         let id = uuid::Uuid::new_v4();
     
         unimplemented!()
     }}
     
-    pub async fn show_{}(state: web::Data<DatabaseClient>) -> impl Responder {{
+    pub async fn show_{}(state: web::Data<Context>) -> impl Responder {{
         unimplemented!()
     }}
 
-    pub async fn delete_{}(id: web::Path<String>, state: web::Data<DatabaseClient>) -> impl Responder {{
+    pub async fn delete_{}(id: web::Path<String>, state: web::Data<Context>) -> impl Responder {{
         let uuid = id.to_string();
     
         if uuid::Uuid::parse_str(&uuid).is_err() {{
@@ -34,7 +34,7 @@ fn crud_controller(name: &str, object: &str) -> String {
         unimplemented!()
     }}
     
-    pub async fn get_{}(id: web::Path<String>, state: web::Data<DatabaseClient>) -> impl Responder {{
+    pub async fn get_{}(id: web::Path<String>, state: web::Data<Context>) -> impl Responder {{
         let uuid = id.to_string();
     
         if uuid::Uuid::parse_str(&uuid).is_err() {{
@@ -47,7 +47,7 @@ fn crud_controller(name: &str, object: &str) -> String {
     pub async fn update_{}(
         id: web::Path<String>,
         info: web::Json<@objectUpdate>, 
-        state: web::Data<DatabaseClient>) -> impl Responder {{
+        state: web::Data<Context>) -> impl Responder {{
         let uuid = id.to_string();
     
         if uuid::Uuid::parse_str(&uuid).is_err() {{
