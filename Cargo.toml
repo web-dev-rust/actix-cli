@@ -3,6 +3,27 @@ name = "actix-cli"
 version = "0.1.0"
 authors = ["Julia Naomi <jnboeira@outlook.com>"]
 edition = "2018"
+license = "LGPL-3.0"
+description = "Rust cli to create actix-web boilerplate projects."
+documentation = "https://github.com/web-dev-rust/actix-cli/blob/master/README.md"
+homepage = "https://github.com/web-dev-rust/actix-cli"
+repository = "https://github.com/web-dev-rust/actix-cli"
+readme = "README.md"
+keywords = ["actix", "build", "cargo", "plugin"]
+categories = [
+  "command-line-utilities",
+  "development-tools",
+  "development-tools::cargo-plugins",
+  "development-tools::build-utils",
+  "development-tools::testing",
+]
+include = [
+  "/src/*",
+  "/Cargo.toml",
+  "/LICENSE",
+  "/README.md",
+  "/Makefile",
+]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
@@ -11,3 +32,7 @@ structopt = "0.3"
 bytes = "1.0.0"
 toml = "0.4.2"
 convert_case = "0.4"
+
+[[bin]]
+name = "cargo-actix"
+path = "src/main.rs"
