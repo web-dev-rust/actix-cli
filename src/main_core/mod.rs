@@ -1,6 +1,7 @@
 use std::fs::OpenOptions;
 use std::io::prelude::*;
 use crate::error::ActixCliError;
+use crate::database::context::{possible_contexts, PossibleContexts};
 
 pub mod routes;
 pub mod controller;
@@ -11,21 +12,25 @@ const fn main_content() -> &'static str {
 use actix_web::middleware::{DefaultHeaders, Logger};
 use actix_web::{App, HttpServer};
 {bastion_use}
+use std::sync::{Arc, Mutex};
 use uuid::Uuid;
 
 mod {name};
 mod {name}_web;
 
 use {name}_web::routes::app_routes;
-//{project_use}
+use {name}::database::Context;
 
 #[actix_rt::main]
 async fn {bastion_main_fn}() -> Result<(), std::io::Error> {
     {not_bastion}
 
-    HttpServer::new(|| {
+    {context}
+    let data = Arc::new(Mutex::new(Context::new(context)));
+
+    HttpServer::new(move || {
         App::new()
-        //{data}
+        .data(data.clone())
         {logger}
         .configure(app_routes)
     })
@@ -68,7 +73,7 @@ const fn logger() -> &'static str {
     "#
 }
 
-pub fn create_main(name: String, bastion: bool, request_logger: bool) -> Result<(), ActixCliError> {
+pub fn create_main(name: String, bastion: bool, request_logger: bool, context: PossibleContexts, model_name: String) -> Result<(), ActixCliError> {
     let mut main = String::from(main_content());
     
     if let Some(idx) = main.find("{bastion_main}") {
@@ -111,7 +116,9 @@ pub fn create_main(name: String, bastion: bool, request_logger: bool) -> Result<
         }
     }
 
-    let main = main.replace("{name}", &name.replace("-", "_"));
+    let main = main
+        .replace("{name}", &name.replace("-", "_"))
+        .replace("{context}", &possible_contexts(context, model_name, name.clone()));
     let mut file = OpenOptions::new()
         .write(true)
         .open(format!("./{}/src/main.rs", name))?;

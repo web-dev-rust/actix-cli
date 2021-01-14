@@ -23,7 +23,7 @@ fn main() {
     let configs = config::crud::create_crud_info(toml, opt.name.clone()).unwrap();
 
     // main.rs
-    let _ = main_core::create_main(opt.name.clone(), opt.fault_tolerant, opt.request_logger).unwrap();
+    let _ = main_core::create_main(opt.name.clone(), opt.fault_tolerant, opt.request_logger, opt.context, configs.clone().unwrap().model_name).unwrap();
     let _ = main_core::routes::create_routes_rs(opt.name.clone(), configs.clone()).unwrap();
     let _ = main_core::controller::create_controllers_rs(opt.name.clone(), configs.clone()).unwrap();
     if configs.is_some() {

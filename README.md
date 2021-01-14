@@ -5,11 +5,13 @@ CLI to create web services with Actix
 - [x] Fault-tolerant option can be enabled to use Bastion
 - [x] Logger middleware option can be enabled with `--request-logger` flag
 - [x] Basic CRUD controllers
-- [ ] Databa configurations
-- [ ] Read routes configs from `Config.toml`
+- [ ] `Unwrap`s to Crate Error
+- [ ] Database configurations
 - [ ] Auth middleware option can be enabled with `--auth` flag
-- [ ] Read models configs from `Config.toml`
 - [ ] Basic Docker config can be enabled with flag
+- [ ] Read routes configs from `Config.toml`
+- [ ] Read models configs from `Config.toml`
+
 
 > Not defining a Database will mean a `Context` will be created to support a basic `HashMap`.
  
@@ -26,10 +28,10 @@ CLI to create web services with Actix
 
 ```sh
 actix-cli 0.1.0
-A CLI to create actix-web projects boilerplate.
+A CLI to create actix-web projects boilerplate
 
 USAGE:
-    actix-cli [OPTIONS] --name <name>
+    actix-cli [OPTIONS] --context <context> --name <name>
 
 FLAGS:
     -h, --help       Prints help information
@@ -37,6 +39,8 @@ FLAGS:
 
 OPTIONS:
     -c, --config-file <config-file>          Config.toml file path
+        --context <context>                  Which database configuration. Currently only `InMemory` allowed [possible
+                                             values: InMemory]
     -f, --fault-tolerant <fault-tolerant>    Enables Bastion for fault tolerant system [default: true]
     -n, --name <name>                        Defines project name in Cargo.toml
     -r, --request-logger <request-logger>    Enables request logger as `[IP:%a DATETIME:%t REQUEST:\"%r\" STATUS: %s
@@ -48,6 +52,7 @@ OPTIONS:
 * `request-logger`: `bool`.
 * `name`: `String`.
 * `config-file`: `std::path::PathBuf`.
+* `context`: case insetive enum containing `InMemory` and in the future `PostgresDB` and `DynamoDB`.
 
 ### Example
 

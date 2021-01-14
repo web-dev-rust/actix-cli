@@ -32,7 +32,8 @@ structopt = "0.3"
 bytes = "1.0.0"
 toml = "0.4.2"
 convert_case = "0.4"
+clap = { version = "2.33", default-features = false }
 
 [[bin]]
-name = "cargo-actix"
+name = "actix-cli"
 path = "src/main.rs"

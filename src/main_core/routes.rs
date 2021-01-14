@@ -25,7 +25,6 @@ pub fn app_routes(config: &mut web::ServiceConfig) {
 const fn modules() -> &'static str {
     r#"
     pub mod controllers;
-    //pub mod schema;
     pub mod routes;
     //pub mod middleware;
     "#

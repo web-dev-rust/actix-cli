@@ -54,7 +54,12 @@ pub fn create_crud_model_rs(name: String, model_config: Option<CrudConfig>) -> R
             eprintln!("Couldn't create src/{}/model/{}.rs: {}", _name, _name, e);
         }
 
-        if let Err(e) = writeln!(file, "{} ", serde_obj_update(&model_config.unwrap().model_name, model.clone()))
+        if let Err(e) = writeln!(file, "{} ", serde_obj_update(&model_config.clone().unwrap().model_name, model.clone()))
+             {
+            eprintln!("Couldn't create src/{}/model/{}.rs: {}", _name,  _name, e);
+        }
+
+        if let Err(e) = writeln!(file, "{} ", serde_obj_response(&model_config.unwrap().model_name))
              {
             eprintln!("Couldn't create src/{}/model/{}.rs: {}", _name,  _name, e);
         }
@@ -75,3 +80,11 @@ fn serde_obj_update(name: &str, model: String) -> String {
     .replace(",", ">,")
     .replace(&name.to_case(Case::Pascal), &update)
 }
+
+fn serde_obj_response(name: &str) -> String {
+    let response = name.to_case(Case::Pascal) + "Response";
+    String::from(DERIVE) + "
+pub struct " + &response + "
+{pub object: "+ &name.to_case(Case::Pascal) + ", pub id: String,}"
+}
+

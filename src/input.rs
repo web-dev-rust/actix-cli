@@ -1,4 +1,5 @@
 use crate::error::ActixCliError;
+use crate::database::context::PossibleContexts;
 use structopt::StructOpt;
 use std::path::PathBuf;
 
@@ -19,6 +20,9 @@ pub struct Opt {
     /// Config.toml file path
     #[structopt(short, long, parse(from_os_str))]
     pub config_file: Option<PathBuf>,
+    /// Which database configuration. Currently only `InMemory` allowed.
+    #[structopt(long, possible_values = &PossibleContexts::variants(), case_insensitive = true)]
+    pub context: PossibleContexts
 
 }
 

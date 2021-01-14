@@ -63,7 +63,7 @@ fn create_crud_routes(routes: &std::collections::BTreeMap<String, Value>, name: 
             "delete" => Ok(format!("
             .route(\"{}\", web::delete().to(delete_{}))", route ,name)), 
             "list" => Ok(format!("
-            .route(\"{}\", web::post().to(show_{}))", route ,name)),
+            .route(\"{}\", web::get().to(show_{}))", route ,name)),
             _ => Err(ActixCliError::UnknwonCrudItem)
         }?;
         routes_def.push_str(&route_config);

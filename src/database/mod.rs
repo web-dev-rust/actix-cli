@@ -3,6 +3,8 @@ use std::io::prelude::*;
 use std::fs;
 use convert_case::{Case, Casing};
 
+pub mod context;
+
 use crate::config::crud::CrudConfig;
 use crate::error::ActixCliError;
 
@@ -25,13 +27,12 @@ pub fn create_crud_model_rs(name: String, model_config: Option<CrudConfig>) -> R
 
 fn database_info(project_name: &str, module_name: &str) -> String {
     let obj = module_name.to_case(Case::Pascal);
-"use crate::{project_name}::model::{project_name}::{@, @Update};
+"use crate::{project_name}::model::{project_name}::{@, @Update, @Response};
 use std::collections::HashMap;
 pub struct Context(HashMap<String, @>);
 
 impl Context {
-    pub fn new() -> Self {
-        let map: HashMap<String, @> = HashMap::new();
+    pub fn new(map: HashMap<String, @>) -> Self {
         Context{0: map}
     }
 
@@ -56,10 +57,14 @@ impl Context {
         }
     }
 
-    pub fn all(&mut self) -> Vec<Object> {
-        self.0.iter()
-            .map(|(k,v)| *v)
-            .collect::<Vec<Object>>()
+    pub fn all(&mut self) -> Vec<ObjectResponse> {
+        self.0
+            .iter()
+            .map(|(k, v)| ObjectResponse {
+                object: v.clone(),
+                id: k.to_string(),
+            })
+            .collect::<Vec<ObjectResponse>>()
     }
 
     pub fn update(&mut self, key: String, value: ObjectUpdate) -> bool {
