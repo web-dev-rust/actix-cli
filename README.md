@@ -56,7 +56,7 @@ OPTIONS:
 
 ### Example
 
-By executing command `actix-cli -n maluco-cli -r true -f true --config-file Config.toml` with the Config.toml as defined below in **CRUD** section the result is found in the [repo](https://github.com/web-dev-rust/actix-cli-basic-example)
+By executing command `actix-cli -n maluco-cli -r true -f true --config-file actix-cli/Config.toml --context inmemory` with the Config.toml as defined below in **CRUD** section the result is found in the [repo](https://github.com/web-dev-rust/actix-cli-basic-example)
 
 ## Confit.toml
 
